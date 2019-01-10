@@ -73,7 +73,6 @@ namespace MapModes
 
                 MapSearchInputField.textComponent = textTMP;
                 MapSearchInputField.textViewport = textArea.GetComponent<RectTransform>();
-                MapSearchInputField.interactable = false;
             }
 
             MapSearchGameObject.transform.SetParent(navScreen.transform);
