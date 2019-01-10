@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapModes", "MapModes\MapModes.csproj", "{D6700129-BEF3-4C76-A1E9-493256357DD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6700129-BEF3-4C76-A1E9-493256357DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6700129-BEF3-4C76-A1E9-493256357DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6700129-BEF3-4C76-A1E9-493256357DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6700129-BEF3-4C76-A1E9-493256357DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F52F8A3-7831-49A8-9B25-1D4AE941D1F6}
+	EndGlobalSection
+EndGlobal
