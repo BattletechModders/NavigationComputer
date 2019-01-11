@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace MapModes
 {
-    public class TagSearch : IMapMode
+    public class Search : IMapMode
     {
         private readonly static Dictionary<string, string> tagIDToFriendlyName = new Dictionary<string, string>()
         {
@@ -71,29 +71,46 @@ namespace MapModes
             { "planet_pop_none", "token population" },
             { "planet_pop_small", "small population" }
         };
+        private static Dictionary<Faction, FactionDef> factionEnumToDef;
+
 
         private MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-        public string Name { get; set; } = "Tag Search";
+        public string Name { get; set; } = "System Search";
 
 
         private float DimLevel;
-        public TagSearch(float dimLevel = 10f)
+        public Search(float dimLevel = 10f)
         {
             DimLevel = dimLevel;
         }
 
-        public void ApplyFilter(SimGameState simGame, string tagSearch)
+        private bool DoesFactionMatchSearch(Faction faction, string search)
+        {
+            var def = factionEnumToDef[faction];
+            var name = def.Name.ToLower();
+            var shortName = def.ShortName.ToLower();
+
+            return name.StartsWith(search) || shortName.StartsWith(search) || name.StartsWith("the " + search) || shortName.StartsWith("the " + search);
+        }
+
+        public void ApplyFilter(SimGameState simGame, string search)
         {
             mpb.Clear();
-            tagSearch = tagSearch.ToLower();
+            search = search.ToLower();
             foreach (var system in simGame.StarSystemDictionary.Keys)
             {
                 var starSystem = simGame.StarSystemDictionary[system];
                 var dim = DimLevel;
 
-                // if friendlyname starts with tag
-                if (string.IsNullOrEmpty(tagSearch) || starSystem.Tags.Any((tagID) => tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(tagSearch)))
+                // if the system starts with the search
+                // or if system has tags that start with search
+                if (string.IsNullOrEmpty(search) ||
+                    starSystem.Name.ToLower().StartsWith(search) ||
+                    starSystem.Def.ContractEmployers.Any((x) => DoesFactionMatchSearch(x, search)) ||
+                    starSystem.Tags.Any((tagID) => tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(search)))
+                {
                     dim = 1;
+                }
 
                 var systemRenderer = simGame.Starmap.Screen.GetSystemRenderer(system);
                 var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
@@ -113,6 +130,11 @@ namespace MapModes
 
         public void Apply(SimGameState simGame)
         {
+            if (factionEnumToDef == null)
+            {
+                factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
+            }
+
             Main.MapSearchGameObject.SetActive(true);
             Main.MapSearchInputField.onValueChanged.AddListener(new UnityAction<string>((x) => ApplyFilter(simGame, x)));
             Main.MapSearchInputField.ActivateInputField();

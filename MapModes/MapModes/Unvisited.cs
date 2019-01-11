@@ -8,7 +8,7 @@ namespace MapModes
     public class Unvisited : IMapMode
     {
         private MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-        public string Name { get; set; } = "Unvisited";
+        public string Name { get; set; } = "Unvisited Systems";
 
 
         private float DimLevel;

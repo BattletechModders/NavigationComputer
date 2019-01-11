@@ -2,6 +2,7 @@
 using BattleTech.UI;
 using Harmony;
 using HBS.Logging;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
@@ -15,7 +16,8 @@ namespace MapModes
         internal static ILog HBSLog;
 
         internal static IMapMode CurrentMapMode;
-        internal static Dictionary<KeyCode, IMapMode> MapModes = new Dictionary<KeyCode, IMapMode>();
+        internal static Dictionary<KeyCode, IMapMode> DiscreteMapModes = new Dictionary<KeyCode, IMapMode>();
+        internal static IMapMode SearchMapMode;
 
         internal static SimGameState SimGame;
 
@@ -29,8 +31,8 @@ namespace MapModes
             HBSLog = HBS.Logging.Logger.GetLogger("MapModes");
 
             // add the map modes
-            MapModes.Add(KeyCode.F1, new TagSearch());
-            MapModes.Add(KeyCode.F2, new Unvisited());
+            DiscreteMapModes.Add(KeyCode.F1, new Unvisited());
+            SearchMapMode = new Search();
         }
 
 
@@ -122,12 +124,12 @@ namespace MapModes
 
         // UTIL
         private static float? oldTravelIntensity = null;
-        internal static void MapStuffSetActive(bool value)
+        internal static void MapStuffSetActive(bool active)
         {
             var starmapBorder = SimGame.Starmap.Screen.transform.Find("RegionBorders").gameObject.GetComponent<StarmapBorders>();
-            SimGame.Starmap.Screen.transform.Find("Background").gameObject.SetActive(value);
+            SimGame.Starmap.Screen.transform.Find("Background").gameObject.SetActive(active);
 
-            if (value)
+            if (active)
             {
                 if (oldTravelIntensity != null)
                     starmapBorder.travelIntensity = (float)oldTravelIntensity;
@@ -136,6 +138,8 @@ namespace MapModes
             {
                 oldTravelIntensity = oldTravelIntensity ?? starmapBorder.travelIntensity;
                 starmapBorder.travelIntensity = 0;
+
+                SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer)null);
             }
 
             SimGame.Starmap.Screen.RefreshBorders();
@@ -174,11 +178,35 @@ namespace MapModes
 
         internal static void ToggleMapMode(KeyCode key)
         {
-            if (MapModes[key] == CurrentMapMode)
+            if (!SimGame.Starmap.Screen.StarmapVisible)
+                return;
+
+            if (DiscreteMapModes[key] == CurrentMapMode)
                 TurnMapModeOff();
             else
-                TurnMapModeOn(MapModes[key]);
+                TurnMapModeOn(DiscreteMapModes[key]);
         }
 
+        internal static void StartSearching()
+        {
+            if (!SimGame.Starmap.Screen.StarmapVisible)
+                return;
+
+            if (CurrentMapMode != SearchMapMode)
+            {
+                TurnMapModeOff();
+            }
+            else
+            {
+                MapSearchInputField.DeactivateInputField();
+                MapSearchInputField.ActivateInputField();
+                MapSearchInputField.Select();
+            }
+
+            if (CurrentMapMode == null)
+            {
+                TurnMapModeOn(SearchMapMode);
+            }
+        }
     }
 }
