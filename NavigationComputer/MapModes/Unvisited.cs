@@ -2,7 +2,7 @@
 using Harmony;
 using System.Collections.Generic;
 
-namespace MapModes
+namespace NavigationComputer
 {
     public class Unvisited : IMapMode
     {

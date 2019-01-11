@@ -1,6 +1,6 @@
 ﻿using BattleTech;
 
-namespace MapModes
+namespace NavigationComputer
 {
     public interface IMapMode
     {

@@ -1,11 +1,11 @@
 {
-    "Name": "MapModes",
-    "DLL": "MapModes.dll",
+    "Name": "NavigationComputer",
+    "DLL": "NavigationComputer.dll",
 
     "Version": "1.0.0",
     "Description": "Adds map modes and a system search into the game",
     "Author": "mpstark",
-    "Website": "www.github.com/BattleTechModders/MapModes",
+    "Website": "www.github.com/BattleTechModders/NavigationComputer",
 
     "Settings": {
     }

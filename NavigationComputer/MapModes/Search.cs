@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
 
-namespace MapModes
+namespace NavigationComputer
 {
     public class Search : IMapMode
     {

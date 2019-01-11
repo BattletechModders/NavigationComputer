@@ -3,7 +3,7 @@ using BattleTech.UI;
 using Harmony;
 using UnityEngine;
 
-namespace MapModes
+namespace NavigationComputer
 {
     [HarmonyPatch(typeof(SGNavigationScreen), "Update")]
     public static class SGNavigationScreen_Update_Patch

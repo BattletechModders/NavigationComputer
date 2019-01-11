@@ -1,7 +1,7 @@
 ﻿using BattleTech;
 using Harmony;
 
-namespace MapModes
+namespace NavigationComputer
 {
     [HarmonyPatch(typeof(SimGameState), "SetSimRoomState")]
     public static class SimGameState_SetSimRoomState_Patch

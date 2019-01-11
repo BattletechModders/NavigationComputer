@@ -7,8 +7,8 @@
     <ProjectGuid>{D6700129-BEF3-4C76-A1E9-493256357DD4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MapModes</RootNamespace>
-    <AssemblyName>MapModes</AssemblyName>
+    <RootNamespace>NavigationComputer</RootNamespace>
+    <AssemblyName>NavigationComputer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
@@ -72,6 +72,6 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetPath) "D:\Games\GOG Galaxy\Games\BATTLETECH\Mods\MapModes" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(TargetPath) "D:\Games\GOG Galaxy\Games\BATTLETECH\Mods\NavigationComputer" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

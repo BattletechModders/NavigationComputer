@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MapModes
+namespace NavigationComputer
 {
     public static class Main
     {

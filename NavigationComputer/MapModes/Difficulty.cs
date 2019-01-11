@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace MapModes
+namespace NavigationComputer
 {
     public class Difficulty : IMapMode
     {
