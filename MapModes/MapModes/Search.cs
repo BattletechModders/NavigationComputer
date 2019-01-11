@@ -89,26 +89,53 @@ namespace MapModes
             return name.StartsWith(search) || shortName.StartsWith(search) || name.StartsWith("the " + search) || shortName.StartsWith("the " + search);
         }
 
-        public void ApplyFilter(SimGameState simGame, string search)
+        private bool DoesTagMatchSearch(string tagID, string search)
         {
-            search = search.ToLower();
-            foreach (var system in simGame.StarSystemDictionary.Keys)
-            {
-                var starSystem = simGame.StarSystemDictionary[system];
-                var dim = DimLevel;
+            return tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(search);
+        }
 
-                // if the system starts with the search
-                // or if system has tags that start with search
-                if (string.IsNullOrEmpty(search) ||
-                    starSystem.Name.ToLower().StartsWith(search) ||
-                    starSystem.Def.ContractEmployers.Any((x) => DoesFactionMatchSearch(x, search)) ||
-                    starSystem.Tags.Any((tagID) => tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(search)))
+        private bool DoesSystemMatchSearch(StarSystem system, string search)
+        {
+            if (string.IsNullOrEmpty(search))
+                return true;
+
+            var invert = false;
+            if (search.StartsWith("-"))
+            {
+                search = search.Remove(0, 1);
+                invert = true;
+            }
+
+            bool matches = system.Name.ToLower().StartsWith(search) ||
+                system.Def.ContractEmployers.Any((faction) => DoesFactionMatchSearch(faction, search)) ||
+                system.Tags.Any((tagID) => DoesTagMatchSearch(tagID, search));
+
+            if (invert)
+                return !matches;
+
+            return matches;
+        }
+
+        public void ApplyFilter(SimGameState simGame, string searchString)
+        {
+            searchString = searchString.ToLower();
+            var searches = searchString.Split(' ');
+
+            foreach (var systemID in simGame.StarSystemDictionary.Keys)
+            {
+                var system = simGame.StarSystemDictionary[systemID];
+                var matches = true;
+
+                foreach (var search in searches)
                 {
-                    // dim level of 1 means it should "stay" the reg system color
-                    dim = 1;
+                    if (!DoesSystemMatchSearch(system, search))
+                    {
+                        matches = false;
+                        break;
+                    }
                 }
 
-                Main.DimSystem(system, dim);
+                Main.DimSystem(systemID, matches ? 1 : DimLevel); // dim level of 1 means it should "stay" the reg system color
             }
         }
 
