@@ -28,7 +28,7 @@ namespace NavigationComputer
             var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            HBSLog = HBS.Logging.Logger.GetLogger("MapModes");
+            HBSLog = HBS.Logging.Logger.GetLogger("NavigationComputer");
 
             // add the map modes
             DiscreteMapModes.Add(KeyCode.F1, new Unvisited());
@@ -48,7 +48,7 @@ namespace NavigationComputer
 
             if (MapModeTextGameObject == null)
             {
-                MapModeTextGameObject = new GameObject("MapModes-Text");
+                MapModeTextGameObject = new GameObject("NavigationComputer-Text");
                 MapModeTextGameObject.AddComponent<RectTransform>();
                 MapModeText = MapModeTextGameObject.AddComponent<TextMeshProUGUI>();
                 MapModeText.alignment = TextAlignmentOptions.Center;
@@ -56,16 +56,16 @@ namespace NavigationComputer
 
             if (MapSearchGameObject == null)
             {
-                MapSearchGameObject = new GameObject("MapModes-Search");
+                MapSearchGameObject = new GameObject("NavigationComputer-Search");
                 MapSearchGameObject.AddComponent<RectTransform>().sizeDelta = new Vector2(500, 100);
                 MapSearchInputField = MapSearchGameObject.AddComponent<TMP_InputField>();
 
-                var textArea = new GameObject("MapModes-Search-TextArea");
+                var textArea = new GameObject("NavigationComputer-Search-TextArea");
                 textArea.AddComponent<RectMask2D>();
                 textArea.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 100);
                 textArea.transform.SetParent(MapSearchGameObject.transform);
 
-                var text = new GameObject("MapModes-Search-Text");
+                var text = new GameObject("NavigationComputer-Search-Text");
                 text.AddComponent<RectTransform>().sizeDelta = new Vector2(500, 100);
                 var textTMP = text.AddComponent<TextMeshProUGUI>();
                 text.transform.SetParent(textArea.transform);
