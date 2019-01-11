@@ -24,7 +24,7 @@ namespace MapModes
                 var starSystem = simGame.StarSystemDictionary[system];
                 var difficulty = starSystem.Def.GetDifficulty(simGame.SimGameMode);
 
-                Main.ScaleSystem(system, difficulty / 10f);
+                Main.ScaleSystem(system, difficulty / 5f);
                 //Main.DimSystem(system, (Math.Abs(heaviestMechRating - difficulty) + 1) * 2f);
             }
         }

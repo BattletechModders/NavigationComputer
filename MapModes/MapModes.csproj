@@ -66,6 +66,7 @@
     <Compile Include="MapModes\Unvisited.cs" />
     <Compile Include="Patches\SGNavigationScreen.cs" />
     <Compile Include="Patches\SGRoomController_Navigation.cs" />
+    <Compile Include="Patches\SimGameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
