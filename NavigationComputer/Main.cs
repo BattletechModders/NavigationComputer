@@ -25,7 +25,7 @@ namespace NavigationComputer
         // ENTRY POINT
         public static void Init(string modDir, string modSettings)
         {
-            var harmony = HarmonyInstance.Create("io.github.mpstark.MapModes");
+            var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             HBSLog = HBS.Logging.Logger.GetLogger("MapModes");
