@@ -132,12 +132,11 @@ namespace MapModes
             var starmapBorder = SimGame.Starmap.Screen.transform.Find("RegionBorders").gameObject.GetComponent<StarmapBorders>();
             SimGame.Starmap.Screen.transform.Find("Background").gameObject.SetActive(active);
 
+            // hide the annoying yellow undertone
             if (active)
             {
                 if (oldTravelIntensity != null)
                     starmapBorder.travelIntensity = (float)oldTravelIntensity;
-
-                Traverse.Create(NavigationScreen).Method("RefreshSystemIndicators").GetValue();
             }
             else
             {
@@ -180,7 +179,7 @@ namespace MapModes
             CurrentMapMode = null;
 
             MapStuffSetActive(true);
-            SimGame.Starmap.Screen.RefreshSystems();
+            NavigationScreen.RefreshWidget();
         }
 
         internal static void ToggleMapMode(KeyCode key)
