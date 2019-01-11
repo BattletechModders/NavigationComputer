@@ -73,12 +73,9 @@ namespace MapModes
         };
         private static Dictionary<Faction, FactionDef> factionEnumToDef;
 
-
-        private MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         public string Name { get; set; } = "System Search";
-
-
         private float DimLevel;
+
         public Search(float dimLevel = 10f)
         {
             DimLevel = dimLevel;
@@ -95,7 +92,6 @@ namespace MapModes
 
         public void ApplyFilter(SimGameState simGame, string search)
         {
-            mpb.Clear();
             search = search.ToLower();
             foreach (var system in simGame.StarSystemDictionary.Keys)
             {
@@ -112,19 +108,7 @@ namespace MapModes
                     dim = 1;
                 }
 
-                var systemRenderer = simGame.Starmap.Screen.GetSystemRenderer(system);
-                var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
-                var starInner = Traverse.Create(systemRenderer).Field("starInner").GetValue<Renderer>();
-
-                var newColor = systemRenderer.systemColor / dim;
-
-                // set outer color
-                mpb.SetColor("_Color", newColor);
-                starOuter.SetPropertyBlock(mpb);
-
-                // set inner color
-                mpb.SetColor("_Color", newColor * 2f);
-                starInner.SetPropertyBlock(mpb);
+                Main.DimSystem(system, dim);
             }
         }
 

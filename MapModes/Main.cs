@@ -126,6 +126,7 @@ namespace MapModes
 
 
         // UTIL
+        private static MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         private static float? oldTravelIntensity = null;
         internal static void MapStuffSetActive(bool active)
         {
@@ -149,6 +150,25 @@ namespace MapModes
             }
 
             SimGame.Starmap.Screen.RefreshBorders();
+        }
+
+        internal static void DimSystem(string system, float dimLevel)
+        {
+            mpb.Clear();
+
+            var systemRenderer = SimGame.Starmap.Screen.GetSystemRenderer(system);
+            var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
+            var starInner = Traverse.Create(systemRenderer).Field("starInner").GetValue<Renderer>();
+
+            var newColor = systemRenderer.systemColor / dimLevel;
+
+            // set outer color
+            mpb.SetColor("_Color", newColor);
+            starOuter.SetPropertyBlock(mpb);
+
+            // set inner color
+            mpb.SetColor("_Color", newColor * 2f);
+            starInner.SetPropertyBlock(mpb);
         }
 
 
