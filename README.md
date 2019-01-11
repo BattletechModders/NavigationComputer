@@ -1,10 +1,6 @@
 # NavigationComputer
 BattleTech mod that adds search functionality to the navigation screen, as well as several map modes.
 
-![Search Functionality](Screenshots/search.png?raw=true "Title")
-![Search Functionality](Screenshots/systemDifficulty.png?raw=true "Title")
-![Search Functionality](Screenshots/unvisitedSystems.png?raw=true "Title")
-
 ## Requirements
 Requires [BTML](https://github.com/BattletechModders/BattleTechModLoader/releases) and [ModTek](https://github.com/BattletechModders/ModTek/releases). [Installation instructions for BTML/ModTek](https://github.com/BattleTechModders/ModTek/wiki/The-Drop-Dead-Simple-Guide-to-Installing-BTML-&-ModTek-&-ModTek-mods).
 
@@ -31,10 +27,15 @@ Additionally you can:
 * Invert with '-' in front of query *(e.g. -pirates)*
 * Chain together multiple queries *(e.g. marik -liao)*
 
+## Screenshots
+
+![Search Functionality](Screenshots/search.png?raw=true "Title")
+![Search Functionality](Screenshots/systemDifficulty.png?raw=true "Title")
+![Search Functionality](Screenshots/unvisitedSystems.png?raw=true "Title")
+
 ## Limitations/known bugs
 
 * Currently the search doesn't handle multi-word searches at all, treating each word as its own section.
-
 
 ## Future Plans
 
