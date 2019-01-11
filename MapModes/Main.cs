@@ -20,6 +20,7 @@ namespace MapModes
         internal static IMapMode SearchMapMode;
 
         internal static SimGameState SimGame;
+        internal static SGNavigationScreen NavigationScreen;
 
 
         // ENTRY POINT
@@ -43,6 +44,8 @@ namespace MapModes
         internal static TMP_InputField MapSearchInputField;
         internal static void SetupUIObjects(SGNavigationScreen navScreen)
         {
+            NavigationScreen = navScreen;
+
             if (MapModeTextGameObject == null)
             {
                 MapModeTextGameObject = new GameObject("MapModes-Text");
@@ -133,6 +136,8 @@ namespace MapModes
             {
                 if (oldTravelIntensity != null)
                     starmapBorder.travelIntensity = (float)oldTravelIntensity;
+
+                Traverse.Create(NavigationScreen).Method("RefreshSystemIndicators").GetValue();
             }
             else
             {
@@ -140,6 +145,8 @@ namespace MapModes
                 starmapBorder.travelIntensity = 0;
 
                 SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer)null);
+
+                Traverse.Create(NavigationScreen).Method("ResetSpecialIndicators").GetValue();
             }
 
             SimGame.Starmap.Screen.RefreshBorders();
