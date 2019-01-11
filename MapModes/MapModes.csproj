@@ -62,6 +62,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="MapModes\IMapMode.cs" />
     <Compile Include="MapModes\Search.cs" />
+    <Compile Include="MapModes\Difficulty.cs" />
     <Compile Include="MapModes\Unvisited.cs" />
     <Compile Include="Patches\SGNavigationScreen.cs" />
     <Compile Include="Patches\SGRoomController_Navigation.cs" />

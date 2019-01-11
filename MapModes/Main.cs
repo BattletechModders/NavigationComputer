@@ -32,6 +32,7 @@ namespace MapModes
 
             // add the map modes
             DiscreteMapModes.Add(KeyCode.F1, new Unvisited());
+            DiscreteMapModes.Add(KeyCode.F2, new Difficulty());
             SearchMapMode = new Search();
         }
 
@@ -168,6 +169,14 @@ namespace MapModes
             // set inner color
             mpb.SetColor("_Color", newColor * 2f);
             starInner.SetPropertyBlock(mpb);
+        }
+
+        internal static void ScaleSystem(string system, float scale)
+        {
+            var systemRenderer = SimGame.Starmap.Screen.GetSystemRenderer(system);
+
+            //HBSLog.Log($"Scaling {system} to {scale} -- old scale {systemRenderer.transform.localScale}");
+            systemRenderer.transform.localScale = new Vector3(scale, scale, scale);
         }
 
 
