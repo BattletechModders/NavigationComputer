@@ -2,7 +2,6 @@
 using BattleTech.UI;
 using Harmony;
 using HBS.Logging;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;

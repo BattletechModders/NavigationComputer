@@ -1,7 +1,6 @@
 ﻿using BattleTech;
 using Harmony;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MapModes
 {

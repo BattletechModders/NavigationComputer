@@ -1,8 +1,6 @@
 ﻿using BattleTech;
-using Harmony;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace MapModes
@@ -87,6 +85,7 @@ namespace MapModes
             var name = def.Name.ToLower();
             var shortName = def.ShortName.ToLower();
 
+            // TODO: "the" thing is a hack, tbh
             return name.StartsWith(search) || shortName.StartsWith(search) || name.StartsWith("the " + search) || shortName.StartsWith("the " + search);
         }
 
@@ -105,6 +104,7 @@ namespace MapModes
                     starSystem.Def.ContractEmployers.Any((x) => DoesFactionMatchSearch(x, search)) ||
                     starSystem.Tags.Any((tagID) => tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(search)))
                 {
+                    // dim level of 1 means it should "stay" the reg system color
                     dim = 1;
                 }
 
@@ -116,6 +116,7 @@ namespace MapModes
         {
             if (factionEnumToDef == null)
             {
+                // TODO: this is marked obviously as a HACK by HBS -- could change any version update
                 factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
             }
 

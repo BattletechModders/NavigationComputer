@@ -1,5 +1,4 @@
-﻿using BattleTech;
-using BattleTech.UI;
+﻿using BattleTech.UI;
 using Harmony;
 
 namespace MapModes

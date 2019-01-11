@@ -38,6 +38,7 @@ namespace MapModes
         {
             if (Main.CurrentMapMode != null)
             {
+                // the return value in __result is if the esc was handled
                 Main.TurnMapModeOff();
                 __result = true;
                 return false;
