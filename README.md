@@ -1,6 +1,9 @@
 # NavigationComputer
 BattleTech mod that adds search functionality to the navigation screen, as well as several map modes.
 
+## Download
+Go to the [releases page](https://github.com/BattletechModders/NavigationComputer/releases) to download a release.
+
 ## Requirements
 Requires [BTML](https://github.com/BattletechModders/BattleTechModLoader/releases) and [ModTek](https://github.com/BattletechModders/ModTek/releases). [Installation instructions for BTML/ModTek](https://github.com/BattleTechModders/ModTek/wiki/The-Drop-Dead-Simple-Guide-to-Installing-BTML-&-ModTek-&-ModTek-mods).
 
