@@ -6,7 +6,7 @@ namespace NavigationComputer.MapModes
 {
     public class Unvisited : IMapMode
     {
-        public string Name { get; set; } = "Unvisited Systems";
+        public string Name { get; } = "Unvisited Systems";
         private readonly float _dimLevel;
 
         public Unvisited(float dimLevel = 10f)
@@ -19,7 +19,7 @@ namespace NavigationComputer.MapModes
             var visitedSystems = Traverse.Create(simGame).Field("VisitedStarSystems").GetValue<List<string>>();
 
             foreach (var system in visitedSystems)
-                Main.DimSystem(system, _dimLevel);
+                MapModesUI.DimSystem(system, _dimLevel);
         }
 
         public void Unapply(SimGameState simGame)

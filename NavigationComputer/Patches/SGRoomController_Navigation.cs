@@ -11,7 +11,7 @@ namespace NavigationComputer.Patches
     {
         public static void Prefix()
         {
-            Main.TurnMapModeOff();
+            MapModesUI.TurnMapModeOff();
         }
     }
 }

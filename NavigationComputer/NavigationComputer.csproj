@@ -68,6 +68,7 @@
     <Compile Include="Patches\SGRoomController_Navigation.cs" />
     <Compile Include="Patches\SimGameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MapModesUI.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

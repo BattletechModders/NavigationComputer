@@ -12,7 +12,7 @@ namespace NavigationComputer.Patches
         public static void Prefix(DropshipLocation state)
         {
             if (state != DropshipLocation.NAVIGATION)
-                Main.TurnMapModeOff();
+                MapModesUI.TurnMapModeOff();
         }
     }
 }

@@ -72,7 +72,7 @@ namespace NavigationComputer.MapModes
         };
         private static Dictionary<Faction, FactionDef> _factionEnumToDef;
 
-        public string Name { get; set; } = "System Search";
+        public string Name { get; } = "System Search";
         private readonly float _dimLevel;
 
         public Search(float dimLevel = 10f)
@@ -126,27 +126,25 @@ namespace NavigationComputer.MapModes
             {
                 var system = simGame.StarSystemDictionary[systemID];
                 var matches = searches.All(search => DoesSystemMatchSearch(system, search));
-                Main.DimSystem(systemID, matches ? 1 : _dimLevel); // dim level of 1 means it should "stay" the reg system color
+                MapModesUI.DimSystem(systemID, matches ? 1 : _dimLevel); // dim level of 1 means it should "stay" the reg system color
             }
         }
 
         public void Apply(SimGameState simGame)
         {
+            // TODO: this is marked obviously as a HACK by HBS -- could change any version update
             if (_factionEnumToDef == null)
-            {
-                // TODO: this is marked obviously as a HACK by HBS -- could change any version update
                 _factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
-            }
 
-            Main.MapSearchGameObject.SetActive(true);
-            Main.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
-            Main.MapSearchInputField.ActivateInputField();
+            MapModesUI.MapSearchGameObject.SetActive(true);
+            MapModesUI.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
+            MapModesUI.MapSearchInputField.ActivateInputField();
         }
 
         public void Unapply(SimGameState simGame)
         {
-            Main.MapSearchInputField.onValueChanged.RemoveAllListeners();
-            Main.MapSearchGameObject.SetActive(false);
+            MapModesUI.MapSearchInputField.onValueChanged.RemoveAllListeners();
+            MapModesUI.MapSearchGameObject.SetActive(false);
         }
     }
 }

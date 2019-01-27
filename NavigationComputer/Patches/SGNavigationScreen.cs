@@ -13,14 +13,14 @@ namespace NavigationComputer.Patches
     {
         public static void Postfix()
         {
-            foreach (var key in Main.DiscreteMapModes.Keys)
+            foreach (var key in MapModesUI.DiscreteMapModes.Keys)
             {
                 if (Input.GetKeyUp(key))
-                    Main.ToggleMapMode(key);
+                    MapModesUI.ToggleMapMode(key);
             }
 
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.F))
-                Main.StartSearching();
+                MapModesUI.StartSearching();
         }
     }
 
@@ -29,8 +29,8 @@ namespace NavigationComputer.Patches
     {
         public static void Postfix(SGNavigationScreen __instance, SimGameState simGame)
         {
-            Main.SetupUIObjects(__instance);
-            Main.SimGame = simGame;
+            MapModesUI.SetupUIObjects(__instance);
+            MapModesUI.SimGame = simGame;
         }
     }
 
@@ -39,11 +39,11 @@ namespace NavigationComputer.Patches
     {
         public static bool Prefix(ref bool __result)
         {
-            if (Main.CurrentMapMode == null)
+            if (MapModesUI.CurrentMapMode == null)
                 return true;
 
             // the return value in __result is if the esc was handled
-            Main.TurnMapModeOff();
+            MapModesUI.TurnMapModeOff();
             __result = true;
             return false;
         }
