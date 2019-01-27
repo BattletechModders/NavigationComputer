@@ -1,12 +1,15 @@
 ﻿using BattleTech.UI;
 using Harmony;
 
-namespace NavigationComputer
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
+namespace NavigationComputer.Patches
 {
     [HarmonyPatch(typeof(SGRoomController_Navigation), "ExitNavScreen")]
     public static class SGRoomController_Navigation_ExitNavScreen_Patch
     {
-        public static void Prefix(SGRoomController_Navigation __instance)
+        public static void Prefix()
         {
             Main.TurnMapModeOff();
         }

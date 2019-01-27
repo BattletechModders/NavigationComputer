@@ -4,9 +4,13 @@ using Harmony;
 using HBS.Logging;
 using System.Collections.Generic;
 using System.Reflection;
+using JetBrains.Annotations;
+using NavigationComputer.MapModes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace NavigationComputer
 {
@@ -15,7 +19,7 @@ namespace NavigationComputer
         internal static ILog HBSLog;
 
         internal static IMapMode CurrentMapMode;
-        internal static Dictionary<KeyCode, IMapMode> DiscreteMapModes = new Dictionary<KeyCode, IMapMode>();
+        internal static readonly Dictionary<KeyCode, IMapMode> DiscreteMapModes = new Dictionary<KeyCode, IMapMode>();
         internal static IMapMode SearchMapMode;
 
         internal static SimGameState SimGame;
@@ -23,6 +27,7 @@ namespace NavigationComputer
 
 
         // ENTRY POINT
+        [UsedImplicitly]
         public static void Init(string modDir, string modSettings)
         {
             var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");
@@ -70,7 +75,7 @@ namespace NavigationComputer
                 var textTMP = text.AddComponent<TextMeshProUGUI>();
                 text.transform.SetParent(textArea.transform);
 
-                textTMP.SetText(string.Empty, new object[0]);
+                textTMP.SetText(string.Empty);
                 textTMP.enableWordWrapping = false;
                 textTMP.extraPadding = true;
                 textTMP.alignment = TextAlignmentOptions.Center;
@@ -85,8 +90,10 @@ namespace NavigationComputer
 
             // set font in the most roundabout way ever
             var fonts = Resources.FindObjectsOfTypeAll(typeof(TMP_FontAsset));
-            foreach (TMP_FontAsset font in fonts)
+            foreach (var o in fonts)
             {
+                var font = (TMP_FontAsset) o;
+
                 if (font.name == "UnitedSansReg-Black SDF")
                     MapModeText.SetFont(font);
 
@@ -126,9 +133,9 @@ namespace NavigationComputer
 
 
         // UTIL
-        private static MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-        private static float? oldTravelIntensity = null;
-        internal static void MapStuffSetActive(bool active)
+        private static readonly MaterialPropertyBlock MPB = new MaterialPropertyBlock();
+        private static float? _oldTravelIntensity;
+        internal static void SetMapStuffActive(bool active)
         {
             var starmapBorder = SimGame.Starmap.Screen.transform.Find("RegionBorders").gameObject.GetComponent<StarmapBorders>();
             SimGame.Starmap.Screen.transform.Find("Background").gameObject.SetActive(active);
@@ -136,12 +143,12 @@ namespace NavigationComputer
             // hide the annoying yellow undertone
             if (active)
             {
-                if (oldTravelIntensity != null)
-                    starmapBorder.travelIntensity = (float)oldTravelIntensity;
+                if (_oldTravelIntensity != null)
+                    starmapBorder.travelIntensity = (float)_oldTravelIntensity;
             }
             else
             {
-                oldTravelIntensity = oldTravelIntensity ?? starmapBorder.travelIntensity;
+                _oldTravelIntensity = _oldTravelIntensity ?? starmapBorder.travelIntensity;
                 starmapBorder.travelIntensity = 0;
 
                 SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer)null);
@@ -154,7 +161,7 @@ namespace NavigationComputer
 
         internal static void DimSystem(string system, float dimLevel)
         {
-            mpb.Clear();
+            MPB.Clear();
 
             var systemRenderer = SimGame.Starmap.Screen.GetSystemRenderer(system);
             var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
@@ -163,12 +170,12 @@ namespace NavigationComputer
             var newColor = systemRenderer.systemColor / dimLevel;
 
             // set outer color
-            mpb.SetColor("_Color", newColor);
-            starOuter.SetPropertyBlock(mpb);
+            MPB.SetColor("_Color", newColor);
+            starOuter.SetPropertyBlock(MPB);
 
             // set inner color
-            mpb.SetColor("_Color", newColor * 2f);
-            starInner.SetPropertyBlock(mpb);
+            MPB.SetColor("_Color", newColor * 2f);
+            starInner.SetPropertyBlock(MPB);
         }
 
         internal static void ScaleSystem(string system, float scale)
@@ -191,7 +198,7 @@ namespace NavigationComputer
             CurrentMapMode.Apply(SimGame);
 
             SetMapModeText(CurrentMapMode.Name);
-            MapStuffSetActive(false);
+            SetMapStuffActive(false);
         }
 
         internal static void TurnMapModeOff()
@@ -206,7 +213,7 @@ namespace NavigationComputer
             CurrentMapMode.Unapply(SimGame);
             CurrentMapMode = null;
 
-            MapStuffSetActive(true);
+            SetMapStuffActive(true);
             NavigationScreen.RefreshWidget();
         }
 

@@ -1,18 +1,10 @@
 ﻿using BattleTech;
-using System;
-using System.Linq;
 
-namespace NavigationComputer
+namespace NavigationComputer.MapModes
 {
     public class Difficulty : IMapMode
     {
         public string Name { get; set; } = "System Difficulty";
-        private float DimLevel;
-
-        public Difficulty(float dimLevel = 10f)
-        {
-            DimLevel = dimLevel;
-        }
 
         public void Apply(SimGameState simGame)
         {

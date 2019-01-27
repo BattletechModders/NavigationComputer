@@ -1,17 +1,17 @@
-﻿using BattleTech;
+﻿using System.Collections.Generic;
+using BattleTech;
 using Harmony;
-using System.Collections.Generic;
 
-namespace NavigationComputer
+namespace NavigationComputer.MapModes
 {
     public class Unvisited : IMapMode
     {
         public string Name { get; set; } = "Unvisited Systems";
-        private float DimLevel;
+        private readonly float _dimLevel;
 
         public Unvisited(float dimLevel = 10f)
         {
-            DimLevel = dimLevel;
+            _dimLevel = dimLevel;
         }
 
         public void Apply(SimGameState simGame)
@@ -19,7 +19,7 @@ namespace NavigationComputer
             var visitedSystems = Traverse.Create(simGame).Field("VisitedStarSystems").GetValue<List<string>>();
 
             foreach (var system in visitedSystems)
-                Main.DimSystem(system, DimLevel);
+                Main.DimSystem(system, _dimLevel);
         }
 
         public void Unapply(SimGameState simGame)

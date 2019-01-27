@@ -1,16 +1,18 @@
 ﻿using BattleTech;
 using Harmony;
 
-namespace NavigationComputer
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
+namespace NavigationComputer.Patches
 {
     [HarmonyPatch(typeof(SimGameState), "SetSimRoomState")]
     public static class SimGameState_SetSimRoomState_Patch
     {
-        public static void Prefix(SimGameState __instance, DropshipLocation state)
+        public static void Prefix(DropshipLocation state)
         {
             if (state != DropshipLocation.NAVIGATION)
                 Main.TurnMapModeOff();
         }
     }
 }
-

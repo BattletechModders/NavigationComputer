@@ -1,13 +1,14 @@
-﻿using BattleTech;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Events;
+using BattleTech;
 
-namespace NavigationComputer
+// ReSharper disable StringLiteralTypo
+
+namespace NavigationComputer.MapModes
 {
     public class Search : IMapMode
     {
-        private readonly static Dictionary<string, string> tagIDToFriendlyName = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> TagIdToFriendlyName = new Dictionary<string, string>()
         {
             { "planet_industry_agriculture", "agriculture" },
             { "planet_industry_aquaculture", "aquaculture" },
@@ -69,19 +70,19 @@ namespace NavigationComputer
             { "planet_pop_none", "token population" },
             { "planet_pop_small", "small population" }
         };
-        private static Dictionary<Faction, FactionDef> factionEnumToDef;
+        private static Dictionary<Faction, FactionDef> _factionEnumToDef;
 
         public string Name { get; set; } = "System Search";
-        private float DimLevel;
+        private readonly float _dimLevel;
 
         public Search(float dimLevel = 10f)
         {
-            DimLevel = dimLevel;
+            _dimLevel = dimLevel;
         }
 
         private bool DoesFactionMatchSearch(Faction faction, string search)
         {
-            var def = factionEnumToDef[faction];
+            var def = _factionEnumToDef[faction];
             var name = def.Name.ToLower();
             var shortName = def.ShortName.ToLower();
 
@@ -91,7 +92,7 @@ namespace NavigationComputer
 
         private bool DoesTagMatchSearch(string tagID, string search)
         {
-            return tagIDToFriendlyName.ContainsKey(tagID) && tagIDToFriendlyName[tagID].StartsWith(search);
+            return TagIdToFriendlyName.ContainsKey(tagID) && TagIdToFriendlyName[tagID].StartsWith(search);
         }
 
         private bool DoesSystemMatchSearch(StarSystem system, string search)
@@ -106,7 +107,7 @@ namespace NavigationComputer
                 invert = true;
             }
 
-            bool matches = system.Name.ToLower().StartsWith(search) ||
+            var matches = system.Name.ToLower().StartsWith(search) ||
                 system.Def.ContractEmployers.Any((faction) => DoesFactionMatchSearch(faction, search)) ||
                 system.Tags.Any((tagID) => DoesTagMatchSearch(tagID, search));
 
@@ -116,7 +117,7 @@ namespace NavigationComputer
             return matches;
         }
 
-        public void ApplyFilter(SimGameState simGame, string searchString)
+        private void ApplyFilter(SimGameState simGame, string searchString)
         {
             searchString = searchString.ToLower();
             var searches = searchString.Split(' ');
@@ -124,31 +125,21 @@ namespace NavigationComputer
             foreach (var systemID in simGame.StarSystemDictionary.Keys)
             {
                 var system = simGame.StarSystemDictionary[systemID];
-                var matches = true;
-
-                foreach (var search in searches)
-                {
-                    if (!DoesSystemMatchSearch(system, search))
-                    {
-                        matches = false;
-                        break;
-                    }
-                }
-
-                Main.DimSystem(systemID, matches ? 1 : DimLevel); // dim level of 1 means it should "stay" the reg system color
+                var matches = searches.All(search => DoesSystemMatchSearch(system, search));
+                Main.DimSystem(systemID, matches ? 1 : _dimLevel); // dim level of 1 means it should "stay" the reg system color
             }
         }
 
         public void Apply(SimGameState simGame)
         {
-            if (factionEnumToDef == null)
+            if (_factionEnumToDef == null)
             {
                 // TODO: this is marked obviously as a HACK by HBS -- could change any version update
-                factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
+                _factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
             }
 
             Main.MapSearchGameObject.SetActive(true);
-            Main.MapSearchInputField.onValueChanged.AddListener(new UnityAction<string>((x) => ApplyFilter(simGame, x)));
+            Main.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
             Main.MapSearchInputField.ActivateInputField();
         }
 

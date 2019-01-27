@@ -3,12 +3,15 @@ using BattleTech.UI;
 using Harmony;
 using UnityEngine;
 
-namespace NavigationComputer
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
+namespace NavigationComputer.Patches
 {
     [HarmonyPatch(typeof(SGNavigationScreen), "Update")]
     public static class SGNavigationScreen_Update_Patch
     {
-        public static void Postfix(SGNavigationScreen __instance)
+        public static void Postfix()
         {
             foreach (var key in Main.DiscreteMapModes.Keys)
             {
@@ -34,17 +37,15 @@ namespace NavigationComputer
     [HarmonyPatch(typeof(SGNavigationScreen), "HandleEscapeKeypress")]
     public static class SGNavigationScreen_HandleEscapeKeypress_Patch
     {
-        public static bool Prefix(SGNavigationScreen __instance, ref bool __result)
+        public static bool Prefix(ref bool __result)
         {
-            if (Main.CurrentMapMode != null)
-            {
-                // the return value in __result is if the esc was handled
-                Main.TurnMapModeOff();
-                __result = true;
-                return false;
-            }
+            if (Main.CurrentMapMode == null)
+                return true;
 
-            return true;
+            // the return value in __result is if the esc was handled
+            Main.TurnMapModeOff();
+            __result = true;
+            return false;
         }
     }
 }
