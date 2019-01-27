@@ -25,9 +25,11 @@ namespace NavigationComputer
                 return true;
             }
 
+            // set CurSelected to the new end of the route that we're making
+            Traverse.Create(starmap).Property("CurSelected").SetValue(system);
+
             var prevPath = new List<INavNode>(starmap.PotentialPath.ToArray());
             var prevPathLast = prevPath.Last();
-
             var starmapPathfinder = Traverse.Create(starmap).Field("starmapPathfinder").GetValue<AStar.PathFinder>();
             starmapPathfinder.InitFindPath(prevPathLast, system, 1, 1E-06f, result =>
             {
