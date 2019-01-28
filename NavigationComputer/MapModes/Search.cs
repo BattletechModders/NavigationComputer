@@ -8,76 +8,89 @@ namespace NavigationComputer.MapModes
 {
     public class Search : IMapMode
     {
-        private static readonly Dictionary<string, string> TagIdToFriendlyName = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> TagIdToFriendlyName = new Dictionary<string, string>
         {
-            { "planet_industry_agriculture", "agriculture" },
-            { "planet_industry_aquaculture", "aquaculture" },
-            { "planet_industry_manufacturing", "manufacturing" },
-            { "planet_industry_mining", "mining" },
-            { "planet_industry_poor", "poor" },
-            { "planet_industry_recreation", "recreation" },
-            { "planet_industry_research", "research" },
-            { "planet_industry_rich", "rich" },
-
-            { "planet_size_large", "high gravity planet" },
-            { "planet_size_medium", "medium gravity planet" },
-            { "planet_size_small", "low gravity planet" },
-
-            { "planet_civ_innersphere", "inner sphere-level civilization" },
-            { "planet_civ_periphery", "periphery-level civilization" },
-            { "planet_civ_primitive", "primitive civilization" },
-
-            { "planet_climate_arctic", "arctic world" },
-            { "planet_climate_arid", "arid world" },
-            { "planet_climate_desert", "desert world" },
-            { "planet_climate_ice", "ice world" },
-            { "planet_climate_mars", "martian world" },
-            { "planet_climate_lunar", "lunar world" },
-            { "planet_climate_moon", "barren world" },
-            { "planet_climate_rocky", "rocky world" },
-            { "planet_climate_terran", "terran world" },
-            { "planet_climate_tropical", "tropical world" },
-            { "planet_climate_water", "water world" },
-
-            { "planet_other_alienvegetation", "alien vegetation" },
-            { "planet_other_battlefield", "battlefield" },
-            { "planet_other_blackmarket", "black market" },
-            { "planet_other_boreholes", "geothermal boreholes" },
-            { "planet_other_capital", "regional capital" },
-            { "planet_other_comstar", "comstar presence" },
-            { "planet_other_empty", "uninhabited" },
-            { "planet_other_floatingworld", "dense cloud layer" },
-            { "planet_other_fungus", "dominant fungus" },
-            { "planet_other_gasgiant", "gas giant moon" },
-            { "planet_other_hub", "travel hub" },
-            { "planet_other_megacity", "megacity" },
-            { "planet_other_megaforest", "planetwide forest" },
-            { "planet_other_mudflats", "planetwide mudflats" },
-            { "planet_other_newcolony", "recently colonized" },
-            { "planet_other_pirate", "pirate presence" },
-            { "planet_other_plague", "plague quarantine" },
-            { "planet_other_prison", "prison planet" },
-            { "planet_other_ruins", "ruins" },
-            { "planet_other_starleague", "former star league presence" },
-            { "planet_other_stonedcaribou", "hallucinatory vegetation" },
-            { "planet_other_storms", "planetwide storms" },
-            { "planet_other_taintedair", "tainted atmosphere" },
-            { "planet_other_volcanic", "extensive vulcanism" },
-            { "planet_other_moon", "moons" },
-
-            { "planet_pop_large", "large population" },
-            { "planet_pop_medium", "moderate population" },
-            { "planet_pop_none", "token population" },
-            { "planet_pop_small", "small population" }
+            {"planet_industry_agriculture", "agriculture"},
+            {"planet_industry_aquaculture", "aquaculture"},
+            {"planet_industry_manufacturing", "manufacturing"},
+            {"planet_industry_mining", "mining"},
+            {"planet_industry_poor", "poor"},
+            {"planet_industry_recreation", "recreation"},
+            {"planet_industry_research", "research"},
+            {"planet_industry_rich", "rich"},
+            {"planet_size_large", "high gravity planet"},
+            {"planet_size_medium", "medium gravity planet"},
+            {"planet_size_small", "low gravity planet"},
+            {"planet_civ_innersphere", "inner sphere-level civilization"},
+            {"planet_civ_periphery", "periphery-level civilization"},
+            {"planet_civ_primitive", "primitive civilization"},
+            {"planet_climate_arctic", "arctic world"},
+            {"planet_climate_arid", "arid world"},
+            {"planet_climate_desert", "desert world"},
+            {"planet_climate_ice", "ice world"},
+            {"planet_climate_mars", "martian world"},
+            {"planet_climate_lunar", "lunar world"},
+            {"planet_climate_moon", "barren world"},
+            {"planet_climate_rocky", "rocky world"},
+            {"planet_climate_terran", "terran world"},
+            {"planet_climate_tropical", "tropical world"},
+            {"planet_climate_water", "water world"},
+            {"planet_other_alienvegetation", "alien vegetation"},
+            {"planet_other_battlefield", "battlefield"},
+            {"planet_other_blackmarket", "black market"},
+            {"planet_other_boreholes", "geothermal boreholes"},
+            {"planet_other_capital", "regional capital"},
+            {"planet_other_comstar", "comstar presence"},
+            {"planet_other_empty", "uninhabited"},
+            {"planet_other_floatingworld", "dense cloud layer"},
+            {"planet_other_fungus", "dominant fungus"},
+            {"planet_other_gasgiant", "gas giant moon"},
+            {"planet_other_hub", "travel hub"},
+            {"planet_other_megacity", "megacity"},
+            {"planet_other_megaforest", "planetwide forest"},
+            {"planet_other_mudflats", "planetwide mudflats"},
+            {"planet_other_newcolony", "recently colonized"},
+            {"planet_other_pirate", "pirate presence"},
+            {"planet_other_plague", "plague quarantine"},
+            {"planet_other_prison", "prison planet"},
+            {"planet_other_ruins", "ruins"},
+            {"planet_other_starleague", "former star league presence"},
+            {"planet_other_stonedcaribou", "hallucinatory vegetation"},
+            {"planet_other_storms", "planetwide storms"},
+            {"planet_other_taintedair", "tainted atmosphere"},
+            {"planet_other_volcanic", "extensive vulcanism"},
+            {"planet_other_moon", "moons"},
+            {"planet_pop_large", "large population"},
+            {"planet_pop_medium", "moderate population"},
+            {"planet_pop_none", "token population"},
+            {"planet_pop_small", "small population"}
         };
-        private static Dictionary<Faction, FactionDef> _factionEnumToDef;
 
-        public string Name { get; } = "System Search";
+        private static Dictionary<Faction, FactionDef> _factionEnumToDef;
         private readonly float _dimLevel;
 
         public Search(float dimLevel = 10f)
         {
             _dimLevel = dimLevel;
+        }
+
+        public string Name { get; } = "System Search";
+
+        public void Apply(SimGameState simGame)
+        {
+            // TODO: this is marked obviously as a HACK by HBS -- could change any version update
+            if (_factionEnumToDef == null)
+                _factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
+
+            MapModesUI.MapSearchGameObject.SetActive(true);
+            MapModesUI.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
+            MapModesUI.MapSearchInputField.ActivateInputField();
+        }
+
+        public void Unapply(SimGameState simGame)
+        {
+            MapModesUI.MapSearchInputField.onValueChanged.RemoveAllListeners();
+            MapModesUI.MapSearchGameObject.SetActive(false);
         }
 
         private bool DoesFactionMatchSearch(Faction faction, string search)
@@ -87,7 +100,8 @@ namespace NavigationComputer.MapModes
             var shortName = def.ShortName.ToLower();
 
             // TODO: "the" thing is a hack, tbh
-            return name.StartsWith(search) || shortName.StartsWith(search) || name.StartsWith("the " + search) || shortName.StartsWith("the " + search);
+            return name.StartsWith(search) || shortName.StartsWith(search) || name.StartsWith("the " + search) ||
+                   shortName.StartsWith("the " + search);
         }
 
         private bool DoesTagMatchSearch(string tagID, string search)
@@ -108,8 +122,8 @@ namespace NavigationComputer.MapModes
             }
 
             var matches = system.Name.ToLower().StartsWith(search) ||
-                system.Def.ContractEmployers.Any((faction) => DoesFactionMatchSearch(faction, search)) ||
-                system.Tags.Any((tagID) => DoesTagMatchSearch(tagID, search));
+                          system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search)) ||
+                          system.Tags.Any(tagID => DoesTagMatchSearch(tagID, search));
 
             if (invert)
                 return !matches;
@@ -126,25 +140,10 @@ namespace NavigationComputer.MapModes
             {
                 var system = simGame.StarSystemDictionary[systemID];
                 var matches = searches.All(search => DoesSystemMatchSearch(system, search));
-                MapModesUI.DimSystem(systemID, matches ? 1 : _dimLevel); // dim level of 1 means it should "stay" the reg system color
+
+                // dim level of 1 means it should "stay" the reg system color
+                MapModesUI.DimSystem(systemID, matches ? 1 : _dimLevel);
             }
-        }
-
-        public void Apply(SimGameState simGame)
-        {
-            // TODO: this is marked obviously as a HACK by HBS -- could change any version update
-            if (_factionEnumToDef == null)
-                _factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
-
-            MapModesUI.MapSearchGameObject.SetActive(true);
-            MapModesUI.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
-            MapModesUI.MapSearchInputField.ActivateInputField();
-        }
-
-        public void Unapply(SimGameState simGame)
-        {
-            MapModesUI.MapSearchInputField.onValueChanged.RemoveAllListeners();
-            MapModesUI.MapSearchGameObject.SetActive(false);
         }
     }
 }

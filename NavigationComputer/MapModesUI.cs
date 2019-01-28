@@ -82,7 +82,7 @@ namespace NavigationComputer
             var fonts = Resources.FindObjectsOfTypeAll(typeof(TMP_FontAsset));
             foreach (var o in fonts)
             {
-                var font = (TMP_FontAsset)o;
+                var font = (TMP_FontAsset) o;
 
                 if (font.name == "UnitedSansReg-Black SDF")
                     MapModeText.SetFont(font);
@@ -125,21 +125,22 @@ namespace NavigationComputer
         // UTIL
         internal static void SetMapStuffActive(bool active)
         {
-            var starmapBorder = SimGame.Starmap.Screen.transform.Find("RegionBorders").gameObject.GetComponent<StarmapBorders>();
+            var starmapBorder = SimGame.Starmap.Screen.transform.Find("RegionBorders").gameObject
+                .GetComponent<StarmapBorders>();
             SimGame.Starmap.Screen.transform.Find("Background").gameObject.SetActive(active);
 
             // hide the annoying yellow undertone
             if (active)
             {
                 if (_oldTravelIntensity != null)
-                    starmapBorder.travelIntensity = (float)_oldTravelIntensity;
+                    starmapBorder.travelIntensity = (float) _oldTravelIntensity;
             }
             else
             {
                 _oldTravelIntensity = _oldTravelIntensity ?? starmapBorder.travelIntensity;
                 starmapBorder.travelIntensity = 0;
 
-                SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer)null);
+                SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer) null);
 
                 Traverse.Create(NavigationScreen).Method("ResetSpecialIndicators").GetValue();
             }
@@ -233,9 +234,7 @@ namespace NavigationComputer
             }
 
             if (CurrentMapMode == null)
-            {
                 TurnMapModeOn(SearchMapMode);
-            }
         }
     }
 }

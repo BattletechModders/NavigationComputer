@@ -19,7 +19,8 @@ namespace NavigationComputer
             NextSelectIsShiftClick = false;
 
             var plannedPath = Traverse.Create(starmap.Screen).Field("_plannedPath").GetValue<LineRenderer>();
-            if (starmap.PotentialPath == null || starmap.PotentialPath.Count == 0 || plannedPath == null || plannedPath.positionCount == 0)
+            if (starmap.PotentialPath == null || starmap.PotentialPath.Count == 0 || plannedPath == null ||
+                plannedPath.positionCount == 0)
             {
                 Main.HBSLog.Log("Shift clicked system but had no previous route");
                 return true;

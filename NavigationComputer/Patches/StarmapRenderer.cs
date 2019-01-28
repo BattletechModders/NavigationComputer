@@ -19,7 +19,7 @@ namespace NavigationComputer.Patches
             }
 
             if (systemRenderer != null && systemRenderer != ___currSystem
-                && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+                                       && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
                 ShiftClickMove.NextSelectIsShiftClick = true;
 
             return true;

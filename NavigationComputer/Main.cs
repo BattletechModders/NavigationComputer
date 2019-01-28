@@ -1,6 +1,6 @@
-﻿using Harmony;
+﻿using System.Reflection;
+using Harmony;
 using HBS.Logging;
-using System.Reflection;
 using JetBrains.Annotations;
 
 namespace NavigationComputer

@@ -6,13 +6,14 @@ namespace NavigationComputer.MapModes
 {
     public class Unvisited : IMapMode
     {
-        public string Name { get; } = "Unvisited Systems";
         private readonly float _dimLevel;
 
         public Unvisited(float dimLevel = 10f)
         {
             _dimLevel = dimLevel;
         }
+
+        public string Name { get; } = "Unvisited Systems";
 
         public void Apply(SimGameState simGame)
         {
