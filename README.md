@@ -1,6 +1,5 @@
 # NavigationComputer
-BattleTech mod that adds search functionality to the navigation screen, as well as several map modes.
-
+BattleTech mod that adds several map modes, search functionality, and the ability to plan custom routes to the navigation screen.
 ## Download
 Go to the [releases page](https://github.com/BattletechModders/NavigationComputer/releases) to download a release.
 
@@ -15,6 +14,11 @@ While in navigation screen:
 * **F2**: Toggle system difficulty map mode
 * **CTRL-F**: System search
 * **ESC**: Exit map mode or search
+* **Shift-Click**: On system: route through this system 
+
+## Custom Routes
+
+Shift clicking a system will keep the previous route and path from the end of the previous route to the new destination. Use this for routing through systems that you want to check out (contracts, shops), but don't neccessarily want to stop at.
 
 ## Searching
 
@@ -42,9 +46,7 @@ Additionally you can:
 
 ## Future Plans
 
-* Be able to make a custom route maybe
 * Additional map modes if needed
 * Options for configuring buttons
 * Turn off fake-star-background or yellow overlay by default
 * Default map mode
-
