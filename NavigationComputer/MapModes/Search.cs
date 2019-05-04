@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BattleTech;
 
 // ReSharper disable StringLiteralTypo
@@ -74,6 +75,7 @@ namespace NavigationComputer.MapModes
             _dimLevel = dimLevel;
         }
 
+
         public string Name { get; } = "System Search";
 
         public void Apply(SimGameState simGame)
@@ -93,6 +95,7 @@ namespace NavigationComputer.MapModes
             MapModesUI.MapSearchGameObject.SetActive(false);
         }
 
+
         private bool DoesFactionMatchSearch(Faction faction, string search)
         {
             var def = _factionEnumToDef[faction];
@@ -109,40 +112,84 @@ namespace NavigationComputer.MapModes
             return TagIdToFriendlyName.ContainsKey(tagID) && TagIdToFriendlyName[tagID].StartsWith(search);
         }
 
-        private bool DoesSystemMatchSearch(StarSystem system, string search)
+        private bool DoesSystemMatchSearch(StarSystem system, SearchValue search)
         {
-            if (string.IsNullOrEmpty(search))
+            if (string.IsNullOrEmpty(search.Value))
                 return true;
 
-            var invert = false;
-            if (search.StartsWith("-"))
+            bool matches;
+            switch (search.Type)
             {
-                search = search.Remove(0, 1);
-                invert = true;
+                case "name":
+                    matches = system.Name.ToLower().StartsWith(search.Value);
+                    break;
+
+                case "for":
+                case "employer":
+                    matches = system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search.Value));
+                    break;
+
+                case "against":
+                case "target":
+                    matches = system.Def.ContractTargets.Any(faction => DoesFactionMatchSearch(faction, search.Value));
+                    break;
+
+                case "tag":
+                    matches = system.Tags.Any(tagID => DoesTagMatchSearch(tagID, search.Value));
+                    break;
+
+                case "":
+                    matches = system.Name.ToLower().StartsWith(search.Value) ||
+                              system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search.Value)) ||
+                              system.Tags.Any(tagID => DoesTagMatchSearch(tagID, search.Value));
+                    break;
+
+                default:
+                    matches = false;
+                    break;
             }
 
-            var matches = system.Name.ToLower().StartsWith(search) ||
-                          system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search)) ||
-                          system.Tags.Any(tagID => DoesTagMatchSearch(tagID, search));
-
-            if (invert)
-                return !matches;
-
-            return matches;
+            return search.Inverted ? !matches : matches;
         }
 
         private void ApplyFilter(SimGameState simGame, string searchString)
         {
             searchString = searchString.ToLower();
-            var searches = searchString.Split(' ');
+            var andSplit = searchString.Split('&');
+            var searchTree = andSplit.Select(andTerm => andTerm.Split('|').Select(orTerm => new SearchValue(orTerm)).ToArray()).ToArray();
 
             foreach (var systemID in simGame.StarSystemDictionary.Keys)
             {
                 var system = simGame.StarSystemDictionary[systemID];
-                var matches = searches.All(search => DoesSystemMatchSearch(system, search));
+                var matches = searchTree.All(andTerm => andTerm.Any(searchValue => DoesSystemMatchSearch(system, searchValue)));
 
                 // dim level of 1 means it should "stay" the reg system color
                 MapModesUI.DimSystem(systemID, matches ? 1 : _dimLevel);
+            }
+        }
+
+
+        private class SearchValue
+        {
+            private static readonly Regex ColonRegex = new Regex(@"^((?<type>\w+):)?\s?(?<search>.+)$\s?");
+
+            public string Value;
+            public string Type;
+            public bool Inverted;
+
+            public SearchValue(string searchString)
+            {
+                searchString = searchString.Trim();
+
+                if (searchString.StartsWith("-"))
+                {
+                    searchString = searchString.Remove(0, 1);
+                    Inverted = true;
+                }
+
+                var regexMatch = ColonRegex.Match(searchString);
+                Type = regexMatch.Groups["type"].Value;
+                Value = regexMatch.Groups["search"].Value;
             }
         }
     }
