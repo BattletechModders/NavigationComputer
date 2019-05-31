@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using Harmony;
 using HBS.Logging;
-using JetBrains.Annotations;
+using NavigationComputer.Features;
+
+// ReSharper disable UnusedMember.Global
 
 namespace NavigationComputer
 {
@@ -10,7 +12,6 @@ namespace NavigationComputer
         internal static ILog HBSLog;
 
         // ENTRY POINT
-        [UsedImplicitly]
         public static void Init(string modDir, string modSettings)
         {
             var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");

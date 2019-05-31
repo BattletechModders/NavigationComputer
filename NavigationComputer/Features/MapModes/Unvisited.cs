@@ -2,7 +2,7 @@
 using BattleTech;
 using Harmony;
 
-namespace NavigationComputer.MapModes
+namespace NavigationComputer.Features.MapModes
 {
     public class Unvisited : IMapMode
     {

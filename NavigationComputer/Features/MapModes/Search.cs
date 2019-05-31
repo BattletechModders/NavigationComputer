@@ -5,7 +5,7 @@ using BattleTech;
 
 // ReSharper disable StringLiteralTypo
 
-namespace NavigationComputer.MapModes
+namespace NavigationComputer.Features.MapModes
 {
     public class Search : IMapMode
     {

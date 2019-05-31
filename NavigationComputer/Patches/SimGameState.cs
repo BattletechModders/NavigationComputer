@@ -1,5 +1,6 @@
 ﻿using BattleTech;
 using Harmony;
+using NavigationComputer.Features;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global

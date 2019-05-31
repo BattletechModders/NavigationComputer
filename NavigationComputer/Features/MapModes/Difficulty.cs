@@ -1,6 +1,6 @@
 ﻿using BattleTech;
 
-namespace NavigationComputer.MapModes
+namespace NavigationComputer.Features.MapModes
 {
     public class Difficulty : IMapMode
     {

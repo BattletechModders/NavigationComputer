@@ -2,12 +2,12 @@
 using BattleTech;
 using BattleTech.UI;
 using Harmony;
-using NavigationComputer.MapModes;
+using NavigationComputer.Features.MapModes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NavigationComputer
+namespace NavigationComputer.Features
 {
     public static class MapModesUI
     {
@@ -155,6 +155,7 @@ namespace NavigationComputer
             var systemRenderer = SimGame.Starmap.Screen.GetSystemRenderer(system);
             var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
             var starInner = Traverse.Create(systemRenderer).Field("starInner").GetValue<Renderer>();
+            var starInnerUnvisited = Traverse.Create(systemRenderer).Field("starInnerUnvisited").GetValue<Renderer>();
 
             var newColor = systemRenderer.systemColor / dimLevel;
 
@@ -165,6 +166,7 @@ namespace NavigationComputer
             // set inner color
             MPB.SetColor("_Color", newColor * 2f);
             starInner.SetPropertyBlock(MPB);
+            starInnerUnvisited.SetPropertyBlock(MPB);
         }
 
         internal static void ScaleSystem(string system, float scale)

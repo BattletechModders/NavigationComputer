@@ -55,18 +55,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="MapModes\IMapMode.cs" />
-    <Compile Include="MapModes\Search.cs" />
-    <Compile Include="MapModes\Difficulty.cs" />
-    <Compile Include="MapModes\Unvisited.cs" />
+    <Compile Include="Features\MapModes\IMapMode.cs" />
+    <Compile Include="Features\MapModes\Search.cs" />
+    <Compile Include="Features\MapModes\Difficulty.cs" />
+    <Compile Include="Features\MapModes\Unvisited.cs" />
     <Compile Include="Patches\SGNavigationScreen.cs" />
     <Compile Include="Patches\SGRoomController_Navigation.cs" />
     <Compile Include="Patches\SimGameState.cs" />
     <Compile Include="Patches\Starmap.cs" />
     <Compile Include="Patches\StarmapRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MapModesUI.cs" />
-    <Compile Include="ShiftClickMove.cs" />
+    <Compile Include="Features\MapModesUI.cs" />
+    <Compile Include="Features\ShiftClickMove.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

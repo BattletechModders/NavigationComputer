@@ -5,7 +5,7 @@ using Harmony;
 using HBS.Nav;
 using UnityEngine;
 
-namespace NavigationComputer
+namespace NavigationComputer.Features
 {
     public static class ShiftClickMove
     {
