@@ -46,6 +46,7 @@ namespace NavigationComputer.Features
                 MapModeTextGameObject = new GameObject("NavigationComputer-Text");
                 MapModeTextGameObject.AddComponent<RectTransform>();
                 MapModeText = MapModeTextGameObject.AddComponent<TextMeshProUGUI>();
+                MapModeText.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 100);
                 MapModeText.alignment = TextAlignmentOptions.Center;
             }
 
@@ -85,10 +86,10 @@ namespace NavigationComputer.Features
                 var font = (TMP_FontAsset) o;
 
                 if (font.name == "UnitedSansReg-Black SDF")
-                    MapModeText.SetFont(font);
+                    MapModeText.font = font;
 
                 if (font.name == "UnitedSansReg-Medium SDF")
-                    MapSearchInputField.textComponent.SetFont(font);
+                    MapSearchInputField.textComponent.font = font;
             }
 
             ResetMapUI();
