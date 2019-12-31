@@ -67,7 +67,6 @@ namespace NavigationComputer.Features.MapModes
             {"planet_pop_small", "small population"}
         };
 
-        private static Dictionary<Faction, FactionDef> _factionEnumToDef;
         private readonly float _dimLevel;
 
         public Search(float dimLevel = 10f)
@@ -80,10 +79,6 @@ namespace NavigationComputer.Features.MapModes
 
         public void Apply(SimGameState simGame)
         {
-            // TODO: this is marked obviously as a HACK by HBS -- could change any version update
-            if (_factionEnumToDef == null)
-                _factionEnumToDef = FactionDef.HACK_GetFactionDefsByEnum(simGame.DataManager);
-
             MapModesUI.MapSearchGameObject.SetActive(true);
             MapModesUI.MapSearchInputField.onValueChanged.AddListener(x => ApplyFilter(simGame, x));
             MapModesUI.MapSearchInputField.ActivateInputField();
@@ -96,9 +91,9 @@ namespace NavigationComputer.Features.MapModes
         }
 
 
-        private bool DoesFactionMatchSearch(Faction faction, string search)
+        private bool DoesFactionMatchSearch(string factionID, string search)
         {
-            var def = _factionEnumToDef[faction];
+            var def = FactionDef.GetFactionDefByEnum(UnityGameInstance.BattleTechGame.DataManager, factionID);
             var name = def.Name.ToLower();
             var shortName = def.ShortName.ToLower();
 
@@ -126,12 +121,12 @@ namespace NavigationComputer.Features.MapModes
 
                 case "for":
                 case "employer":
-                    matches = system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search.Value));
+                    matches = system.Def.ContractEmployerIDList.Any(faction => DoesFactionMatchSearch(faction, search.Value));
                     break;
 
                 case "against":
                 case "target":
-                    matches = system.Def.ContractTargets.Any(faction => DoesFactionMatchSearch(faction, search.Value));
+                    matches = system.Def.ContractTargetIDList.Any(faction => DoesFactionMatchSearch(faction, search.Value));
                     break;
 
                 case "tag":
@@ -140,7 +135,7 @@ namespace NavigationComputer.Features.MapModes
 
                 case "":
                     matches = system.Name.ToLower().StartsWith(search.Value) ||
-                              system.Def.ContractEmployers.Any(faction => DoesFactionMatchSearch(faction, search.Value)) ||
+                              system.Def.ContractEmployerIDList.Any(faction => DoesFactionMatchSearch(faction, search.Value)) ||
                               system.Tags.Any(tagID => DoesTagMatchSearch(tagID, search.Value));
                     break;
 
