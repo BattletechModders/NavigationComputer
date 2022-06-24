@@ -104,7 +104,7 @@ namespace NavigationComputer.Features.MapModes
 
         private bool DoesTagMatchSearch(string tagID, string search)
         {
-            return TagIdToFriendlyName.ContainsKey(tagID) && TagIdToFriendlyName[tagID].StartsWith(search);
+            return (TagIdToFriendlyName.ContainsKey(tagID) && TagIdToFriendlyName[tagID].StartsWith(search)) || (Main.modSettings.SearchableTags.ContainsKey(tagID) && Main.modSettings.SearchableTags[tagID].StartsWith(search));
         }
 
         private bool DoesSystemMatchSearch(StarSystem system, SearchValue search)
