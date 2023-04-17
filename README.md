@@ -37,6 +37,20 @@ Additionally you can:
 * Invert with '-' in front of query *(e.g. -pirates)*
 * Chain together multiple queries *(e.g. marik -liao)*
 
+In mod.json, you can define your own searchable planet tags, e.g:
+
+```
+"Settings": {
+		"SearchableTags": {
+			"planet_gameworld": "game world",
+			"planet_factory": "factory world",
+			"planet_factory_restricted": "restricted factory world",
+			"planet_industry_electronics": "electronics",
+			"planet_industry_chemicals": "chemicals"
+		}
+	}
+```
+
 ## Screenshots
 
 ![Search Functionality](Screenshots/search.png?raw=true "Title")
