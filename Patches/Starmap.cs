@@ -1,5 +1,4 @@
 ﻿using BattleTech;
-using Harmony;
 using NavigationComputer.Features;
 using UnityEngine;
 
@@ -11,9 +10,17 @@ namespace NavigationComputer.Patches
     [HarmonyPatch(typeof(Starmap), "SetSelectedSystem", typeof(StarSystemNode))]
     public static class Starmap_SetSelectedSystem_Patch
     {
-        public static bool Prefix(Starmap __instance, StarSystemNode node)
+        public static void Prefix(ref bool __runOriginal, Starmap __instance, StarSystemNode node)
         {
-            return ShiftClickMove.HandleClickSystem(__instance, node);
+            if (!__runOriginal) return;
+            var result = ShiftClickMove.HandleClickSystem(__instance, node);
+            if (!result)
+            {
+                __runOriginal = false;
+                return;
+            }
+            __runOriginal = true;
+            return;
         }
     }
 

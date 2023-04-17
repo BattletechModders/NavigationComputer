@@ -1,6 +1,5 @@
 ﻿using BattleTech;
 using BattleTech.UI;
-using Harmony;
 using NavigationComputer.Features;
 using UnityEngine;
 
@@ -38,15 +37,20 @@ namespace NavigationComputer.Patches
     [HarmonyPatch(typeof(SGNavigationScreen), "HandleEscapeKeypress")]
     public static class SGNavigationScreen_HandleEscapeKeypress_Patch
     {
-        public static bool Prefix(ref bool __result)
+        public static void Prefix(ref bool __runOriginal, ref bool __result)
         {
+            if (!__runOriginal) return;
             if (MapModesUI.CurrentMapMode == null)
-                return true;
-
+            {
+                __runOriginal = true;
+                return;
+            }
+            
             // the return value in __result is if the esc was handled
             MapModesUI.TurnMapModeOff();
             __result = true;
-            return false;
+            __runOriginal = false;
+            return;
         }
     }
 }

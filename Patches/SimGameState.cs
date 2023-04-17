@@ -1,5 +1,4 @@
 ﻿using BattleTech;
-using Harmony;
 using NavigationComputer.Features;
 
 // ReSharper disable InconsistentNaming

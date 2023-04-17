@@ -1,4 +1,7 @@
 # NavigationComputer
+
+**v2.1.0 and higher requires modtek v3 or higher**
+
 BattleTech mod that adds several map modes, search functionality, and the ability to plan custom routes to the navigation screen.
 ## Download
 Go to the [releases page](https://github.com/BattletechModders/NavigationComputer/releases) to download a release.

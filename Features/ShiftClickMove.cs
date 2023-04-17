@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleTech;
-using Harmony;
 using HBS.Nav;
 using UnityEngine;
 
@@ -18,7 +17,8 @@ namespace NavigationComputer.Features
 
             NextSelectIsShiftClick = false;
 
-            var plannedPath = Traverse.Create(starmap.Screen).Field("_plannedPath").GetValue<LineRenderer>();
+            //var plannedPath = Traverse.Create(starmap.Screen).Field("_plannedPath").GetValue<LineRenderer>();
+            var plannedPath = starmap.Screen.plannedPath;
             if (starmap.PotentialPath == null || starmap.PotentialPath.Count == 0 || plannedPath == null ||
                 plannedPath.positionCount == 0)
             {
@@ -27,11 +27,13 @@ namespace NavigationComputer.Features
             }
 
             // set CurSelected to the new end of the route that we're making
-            Traverse.Create(starmap).Property("CurSelected").SetValue(system);
+            //Traverse.Create(starmap).Property("CurSelected").SetValue(system);
+            starmap.CurSelected = system;
 
             var prevPath = new List<INavNode>(starmap.PotentialPath.ToArray());
             var prevPathLast = prevPath.Last();
-            var starmapPathfinder = Traverse.Create(starmap).Field("starmapPathfinder").GetValue<AStar.PathFinder>();
+            //var starmapPathfinder = Traverse.Create(starmap).Field("starmapPathfinder").GetValue<AStar.PathFinder>();
+            var starmapPathfinder = starmap.starmapPathfinder;
             starmapPathfinder.InitFindPath(prevPathLast, system, 1, 1E-06f, result =>
             {
                 if (result.status != PathStatus.Complete)
@@ -44,7 +46,8 @@ namespace NavigationComputer.Features
                 result.path.InsertRange(0, prevPath);
 
                 Main.HBSLog.Log($"Created new hybrid route of size {result.path.Count}");
-                Traverse.Create(starmap).Method("OnPathfindingComplete", result).GetValue();
+               // Traverse.Create(starmap).Method("OnPathfindingComplete", result).GetValue();
+               starmap.OnPathfindingComplete(result);
             });
 
             return false;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using BattleTech.Rendering;
-using Harmony;
 using HBS.Logging;
 using NavigationComputer.Features;
 using Newtonsoft.Json;
@@ -29,8 +27,11 @@ namespace NavigationComputer
                 HBSLog.LogException(ex);
                 modSettings = new Settings();
             }
-            var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            var HarmonyPackage = "io.github.mpstark.NavigationComputer";
+            //var harmony = HarmonyInstance.Create("io.github.mpstark.NavigationComputer");
+            //harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), HarmonyPackage);
             MapModesUI.Setup();
         }
     }

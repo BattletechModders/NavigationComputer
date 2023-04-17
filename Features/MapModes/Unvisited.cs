@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BattleTech;
-using Harmony;
 
 namespace NavigationComputer.Features.MapModes
 {
@@ -17,8 +16,8 @@ namespace NavigationComputer.Features.MapModes
 
         public void Apply(SimGameState simGame)
         {
-            var visitedSystems = Traverse.Create(simGame).Field("VisitedStarSystems").GetValue<List<string>>();
-
+            //var visitedSystems = Traverse.Create(simGame).Field("VisitedStarSystems").GetValue<List<string>>();
+            var visitedSystems = simGame.VisitedStarSystems;
             foreach (var system in visitedSystems)
                 MapModesUI.DimSystem(system, _dimLevel);
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleTech;
 using BattleTech.UI;
-using Harmony;
 using NavigationComputer.Features.MapModes;
 using TMPro;
 using UnityEngine;
@@ -143,7 +142,8 @@ namespace NavigationComputer.Features
 
                 SimGame.Starmap.Screen.ForceClickSystem((StarmapSystemRenderer) null);
 
-                Traverse.Create(NavigationScreen).Method("ResetSpecialIndicators").GetValue();
+                //Traverse.Create(NavigationScreen).Method("ResetSpecialIndicators").GetValue();
+                NavigationScreen.ResetSpecialIndicators();
             }
 
             SimGame.Starmap.Screen.RefreshBorders();
@@ -154,10 +154,12 @@ namespace NavigationComputer.Features
             MPB.Clear();
 
             var systemRenderer = SimGame.Starmap.Screen.GetSystemRenderer(system);
-            var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
-            var starInner = Traverse.Create(systemRenderer).Field("starInner").GetValue<Renderer>();
-            var starInnerUnvisited = Traverse.Create(systemRenderer).Field("starInnerUnvisited").GetValue<Renderer>();
-
+            //var starOuter = Traverse.Create(systemRenderer).Field("starOuter").GetValue<Renderer>();
+            //var starInner = Traverse.Create(systemRenderer).Field("starInner").GetValue<Renderer>();
+            //var starInnerUnvisited = Traverse.Create(systemRenderer).Field("starInnerUnvisited").GetValue<Renderer>();
+            var starOuter = systemRenderer.starOuter;
+            var starInner = systemRenderer.starInner;
+            var starInnerUnvisited = systemRenderer.starInnerUnvisited;
             var newColor = systemRenderer.systemColor / dimLevel;
 
             // set outer color
